@@ -23,7 +23,6 @@ public class NumberAnimatorTextView extends AppCompatTextView {
 
     private final static int NUMBER_ANIMATOR_DURATION = 1000;
     private int unitNumber;
-    private TextView newUnitNumberTextView;
     private StringBuilder numberStringBuilder;
 
     public NumberAnimatorTextView(Context context) {
@@ -60,7 +59,7 @@ public class NumberAnimatorTextView extends AppCompatTextView {
 
     public void changeAnimator(LinearLayout linearLayout, boolean isSelected) {
         setSelectedNumber();
-        newUnitNumberTextView = new TextView(getContext());
+        TextView newUnitNumberTextView = new TextView(getContext());
         newUnitNumberTextView.setText(String.valueOf(unitNumber));
         newUnitNumberTextView.setTextSize(55);
         newUnitNumberTextView.setTextColor(ContextCompat.getColor(getContext(),
