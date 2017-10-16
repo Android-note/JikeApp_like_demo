@@ -21,9 +21,10 @@ import android.widget.TextView;
 
 public class NumberAnimatorTextView extends AppCompatTextView {
 
+    private final static int NUMBER_ANIMATOR_DURATION = 1000;
     private int unitNumber;
-    private String newUnitNumber;
     private TextView newUnitNumberTextView;
+    private StringBuilder numberStringBuilder;
 
     public NumberAnimatorTextView(Context context) {
         super(context);
@@ -46,28 +47,26 @@ public class NumberAnimatorTextView extends AppCompatTextView {
                         getText().toString().length()));
     }
 
-    private void setSelectedNumber(boolean isSelected) {
-        if (isSelected) {
-            newUnitNumber = String.valueOf(unitNumber + 1);
-        } else {
-            newUnitNumber = String.valueOf(unitNumber);
-        }
-        StringBuilder stringBuilder = new StringBuilder(getText().toString());
-        stringBuilder.replace(getText().toString().length() - 1,
-                getText().toString().length(), newUnitNumber);
-        setText(stringBuilder.toString());
+    private void setSelectedNumber() {
+        numberStringBuilder = new StringBuilder(getText().toString());
+        clearUnitNumber();
+    }
+
+    private void clearUnitNumber() {
+        numberStringBuilder.replace(getText().toString().length() - 1,
+                getText().toString().length(), "");
+        setText(numberStringBuilder.toString());
     }
 
     public void changeAnimator(LinearLayout linearLayout, boolean isSelected) {
-        setSelectedNumber(isSelected);
+        setSelectedNumber();
         newUnitNumberTextView = new TextView(getContext());
-        newUnitNumberTextView.setText(newUnitNumber);
+        newUnitNumberTextView.setText(String.valueOf(unitNumber));
         newUnitNumberTextView.setTextSize(55);
         newUnitNumberTextView.setTextColor(ContextCompat.getColor(getContext(),
                 android.R.color.darker_gray));
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(-155, 0, 0, 0);
         linearLayout.addView(newUnitNumberTextView, params);
 
         if (isSelected) {
@@ -80,10 +79,10 @@ public class NumberAnimatorTextView extends AppCompatTextView {
     private void increaseAnimator(final LinearLayout linearLayout, final View view) {
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(
-                ObjectAnimator.ofFloat(view, "translationY", -1000f),
+                ObjectAnimator.ofFloat(view, "translationY", -800f),
                 ObjectAnimator.ofFloat(view, "alpha", 0.2f)
         );
-        animatorSet.setDuration(2000);
+        animatorSet.setDuration(NUMBER_ANIMATOR_DURATION);
         animatorSet.setInterpolator(new AccelerateDecelerateInterpolator());
         animatorSet.start();
         animatorSet.addListener(new AnimatorListenerAdapter() {
@@ -91,6 +90,17 @@ public class NumberAnimatorTextView extends AppCompatTextView {
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 linearLayout.removeView(view);
+                int newUnitNumber = Integer.valueOf(getText().toString()
+                        .substring(getText().toString().length() - 1,
+                                getText().toString().length()));
+                setText(numberStringBuilder.append(
+                        String.valueOf(newUnitNumber + 1)));
+            }
+
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                clearUnitNumber();
             }
         });
     }
@@ -98,10 +108,10 @@ public class NumberAnimatorTextView extends AppCompatTextView {
     private void decreaseAnimator(final LinearLayout linearLayout, final View view) {
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(
-                ObjectAnimator.ofFloat(view, "translationY", 1000f),
+                ObjectAnimator.ofFloat(view, "translationY", 800f),
                 ObjectAnimator.ofFloat(view, "alpha", 0.2f)
         );
-        animatorSet.setDuration(2000);
+        animatorSet.setDuration(NUMBER_ANIMATOR_DURATION);
         animatorSet.setInterpolator(new AccelerateDecelerateInterpolator());
         animatorSet.start();
         animatorSet.addListener(new AnimatorListenerAdapter() {
@@ -109,6 +119,17 @@ public class NumberAnimatorTextView extends AppCompatTextView {
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 linearLayout.removeView(view);
+                int newUnitNumber = Integer.valueOf(getText().toString()
+                        .substring(getText().toString().length() - 1,
+                                getText().toString().length()));
+                setText(numberStringBuilder.append(
+                        String.valueOf(newUnitNumber - 1)));
+            }
+
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                clearUnitNumber();
             }
         });
     }
