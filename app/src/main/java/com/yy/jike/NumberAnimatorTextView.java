@@ -15,12 +15,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
- * Created by yy on 2017/10/16.
+ * @author yangyi 2017年10月17日10:38:46
  */
-
 public class NumberAnimatorTextView extends AppCompatTextView {
 
-    private final static int NUMBER_ANIMATOR_DURATION = 1000;
+    private static final int NUMBER_ANIMATOR_DURATION = 1000;
     private int unitNumber;
     private StringBuilder numberStringBuilder;
 
