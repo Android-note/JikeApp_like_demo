@@ -11,7 +11,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.LinearInterpolator;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -89,11 +88,9 @@ public class NumberAnimatorTextView extends AppCompatTextView {
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 linearLayout.removeView(view);
-                int newUnitNumber = Integer.valueOf(getText().toString()
-                        .substring(getText().toString().length() - 1,
-                                getText().toString().length()));
+                unitNumber += 1;
                 setText(numberStringBuilder.append(
-                        String.valueOf(newUnitNumber + 1)));
+                        String.valueOf(unitNumber)));
             }
 
             @Override
@@ -118,11 +115,9 @@ public class NumberAnimatorTextView extends AppCompatTextView {
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 linearLayout.removeView(view);
-                int newUnitNumber = Integer.valueOf(getText().toString()
-                        .substring(getText().toString().length() - 1,
-                                getText().toString().length()));
+                unitNumber -= 1;
                 setText(numberStringBuilder.append(
-                        String.valueOf(newUnitNumber - 1)));
+                        String.valueOf(unitNumber)));
             }
 
             @Override
